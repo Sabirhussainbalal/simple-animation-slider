@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation slider</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="shortcut icon" href="assets/1.jpg" type="image/x-icon" />
+  </head>
+  <body class="flex justify-center items-center h-screen bg-gray-100">
+    <div class="bg-black w-[400px] h-[300px] scale-95 overflow-hidden">
+      <!-- 1 -->
+      <img
+        src="assets/1.jpg"
+        class="left absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="1"
+      />
+      <!-- 2 -->
+      <img
+        src="assets/2.jpg"
+        class="left absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="2"
+      />
+      <!-- 3 -->
+      <img
+        src="assets/3.jpg"
+        class="left absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="3"
+      />
+      <!-- 4 -->
+      <img
+        src="assets/4.jpg"
+        class="left absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="4"
+      />
+      <!-- 5 -->
+      <img
+        src="assets/5.jpg"
+        class="left absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="5"
+      />
+    </div>
+    <main
+      class="md:w-[700px] w-[500px] h-[300px] bg-red-400 shadow-[0px_5px_20px_0px_black] relative overflow-hidden"
+    >
+      <!-- 1 -->
+      <img
+        src="assets/1.jpg"
+        class="slides absolute w-full h-full object-cover transition-all duration-300"
+        alt="1"
+      />
+      <!-- 2 -->
+      <img
+        src="assets/2.jpg"
+        class="slides absolute w-full h-full object-cover transition-all duration-300"
+        alt="2"
+      />
+      <!-- 3 -->
+      <img
+        src="assets/3.jpg"
+        class="slides absolute w-full h-full object-cover transition-all duration-300"
+        alt="3"
+      />
+      <!-- 4 -->
+      <img
+        src="assets/4.jpg"
+        class="slides absolute w-full h-full object-cover transition-all duration-300"
+        alt="4"
+      />
+      <!-- 5 -->
+      <img
+        src="assets/5.jpg"
+        class="slides absolute w-full h-full object-cover transition-all duration-300"
+        alt="5"
+      />
+    </main>
+    <div class="bg-black w-[400px] h-[300px] scale-95 overflow-hidden">
+      <!-- 1 -->
+      <img
+        src="assets/1.jpg"
+        class="right absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="1"
+      />
+      <!-- 2 -->
+      <img
+        src="assets/2.jpg"
+        class="right absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="2"
+      />
+      <!-- 3 -->
+      <img
+        src="assets/3.jpg"
+        class="right absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="3"
+      />
+      <!-- 4 -->
+      <img
+        src="assets/4.jpg"
+        class="right absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="4"
+      />
+      <!-- 5 -->
+      <img
+        src="assets/5.jpg"
+        class="right absolute w-full h-full object-cover transition-all duration-300 blur-[5px]"
+        alt="5"
+      />
+    </div>
+    <div
+      class="absolute bottom-[calc(50%-240px)] left-1/2 -translate-x-1/2 flex gap-4"
+    >
+      <button
+        id="prev"
+        class="cursor-pointer bg-[#666666] rounded-full p-2 hover:scale-125 transition-all duration-300 hover:translate-x-[-10px] hover:shadow-[0px_5px_20px_0px_black]"
+        title="prev"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="30px"
+          viewBox="0 -960 960 960"
+          width="30px"
+          fill="white"
+        >
+          <path
+            d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"
+          />
+        </svg>
+      </button>
+      <button
+        id="next"
+        class="cursor-pointer bg-[#666666] rounded-full p-2 hover:scale-125 transition-all duration-300 hover:translate-x-[10px] hover:shadow-[0px_5px_20px_0px_black]"
+        title="next"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="30px"
+          viewBox="0 -960 960 960"
+          width="30px"
+          fill="white"
+        >
+          <path
+            d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"
+          />
+        </svg>
+      </button>
+    </div>
+    <script>
+      const slides = document.querySelectorAll(".slides");
+      const left_slide = document.querySelectorAll(".left");
+      const right_slide = document.querySelectorAll(".right");
+      let count = 0;
+      const len = slides.length; // number of slides
+      let isAnimating = false;
+      const prev = document.querySelector("#prev");
+      const next = document.querySelector("#next");
+
+      // Position the slides in each container
+      slides.forEach((slide, index) => {
+        slide.style.left = `${index * 100}%`;
+      });
+      left_slide.forEach((slide, index) => {
+        slide.style.left = `${index * 100}%`;
+      });
+      right_slide.forEach((slide, index) => {
+        slide.style.left = `${index * 100}%`;
+      });
+
+      left_slide.forEach((slide) => {
+        slide.style.transform = `translateX(-${(len - 1) * 100}%)`;
+      });
+
+      right_slide.forEach((slide) => {
+        slide.style.transform = `translateX(-${(count + 1) * 100}%)`;
+      });
+
+      const animation = () => {
+        // Update the main slider:
+        slides.forEach((slide) => {
+          slide.style.transform = `translateX(-${count * 100}%)`;
+        });
+        // For left slider: show the previous slide (wrap around if needed)
+        const prevIndex = count === 0 ? len - 1 : count - 1;
+        left_slide.forEach((slide) => {
+          slide.style.transform = `translateX(-${prevIndex * 100}%)`;
+        });
+        // For right slider: show the next slide (wrap around if needed)
+        const nextIndex = (count + 1) % len;
+        right_slide.forEach((slide) => {
+          slide.style.transform = `translateX(-${nextIndex * 100}%)`;
+        });
+      };
+
+      prev.addEventListener("click", () => {
+        if (isAnimating) return;
+        isAnimating = true;
+        // Decrement with wrap-around
+        if (count === 0) {
+          count = len - 1;
+        } else {
+          count--;
+        }
+        animation();
+        setTimeout(() => {
+          isAnimating = false;
+        }, 310); // slightly longer than the 300ms transition
+      });
+
+      next.addEventListener("click", () => {
+        if (isAnimating) return;
+        isAnimating = true;
+        // Increment with wrap-around
+        if (count === len - 1) {
+          count = 0;
+        } else {
+          count++;
+        }
+        animation();
+        setTimeout(() => {
+          isAnimating = false;
+        }, 310);
+      });
+    </script>
+  </body>
+</html>
